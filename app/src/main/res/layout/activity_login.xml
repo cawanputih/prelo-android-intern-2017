@@ -8,10 +8,22 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="purba.app.MainActivity">
+    tools:context="purba.app.LoginActivity">
+
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/idnama"
+        android:layout_marginTop="100dp"
+        android:inputType="textPersonName"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/idnama"
+        android:id="@+id/idpassword"/>
+
+
+
 </RelativeLayout>
