@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 
 import java.io.BufferedReader;
@@ -47,8 +48,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private String TAG = LoginActivity.class.getSimpleName();
     private ProgressDialog pDialog;
-    String pesan;
-    TextView txtpesan;
+
+
+    String mtoken;
+    EditText etnama;
+    EditText etpassword;
+    Button btnlogin;
     private static String url = " https://dev.prelo.id/api/auth/login/";
 
 
@@ -57,9 +62,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        txtpesan = (TextView) findViewById(R.id.idnama);
-
-        new GetGuest().execute();
+        etnama = (EditText) findViewById(R.id.idnama);
+        etpassword = (EditText) findViewById(R.id.idpassword);
+        btnlogin = (Button) findViewById(R.id.idbtnlogin);
+        btnlogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new GetGuest().execute();
+            }
+        });
     }
 
     private class GetGuest extends AsyncTask<Void, Void, Void> {
@@ -78,30 +89,20 @@ public class LoginActivity extends AppCompatActivity {
         protected Void doInBackground(Void... arg0) {
             HttpHandler sh = new HttpHandler();
 
-            String jsonStr = sh.makeServiceCall(url);
+            String jsonStr = sh.makeServiceCall(url,etnama.getText().toString(),etpassword.getText().toString());
 
             if (jsonStr != null) {
                 try {
-                    JSONArray jguest = new JSONArray(jsonStr);
+                    String crappyPrefix = "null";
 
-                    guestList.clear();
-                    Guest guest;
-
-                    for (int i = 0; i < jguest.length(); i++) {
-                        JSONObject c = jguest.getJSONObject(i);
-
-                        String id = c.getString("id");
-                        String name = c.getString("name");
-                        String birthdate= c.getString("birthdate");
-
-                        guest  = new Guest();
-
-                        guest.setId(id);
-                        guest.setName(name);
-                        guest.setBirthdate(birthdate);
-
-                        guestList.add(guest);
+                    if(jsonStr.startsWith(crappyPrefix)){
+                        jsonStr = jsonStr.substring(crappyPrefix.length(), jsonStr.length());
                     }
+
+                    JSONObject jobj = new JSONObject(jsonStr);
+                    JSONObject jdata = jobj.getJSONObject("_data");
+                    mtoken = jdata.optString("token");
+
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                     runOnUiThread(new Runnable() {
@@ -129,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
 
-
+            return null;
         }
 
 
@@ -139,12 +140,11 @@ public class LoginActivity extends AppCompatActivity {
             if (pDialog.isShowing())
                 pDialog.dismiss();
 
-            txtpesan.setText(pesan);
-            Log.d("Semangat",pesan);
             Toast.makeText(getApplicationContext(),
-                    pesan,
+                    mtoken,
                     Toast.LENGTH_LONG)
                     .show();
+
         }
     }
 }

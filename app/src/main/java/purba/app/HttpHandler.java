@@ -38,7 +38,7 @@ public class HttpHandler {
     public HttpHandler() {
     }
 
-    public String makeServiceCall(String reqUrl) {
+    public String makeServiceCall(String reqUrl,String nama,String password) {
         String response = null;
         try {
             URL url = new URL(reqUrl);
@@ -50,8 +50,8 @@ public class HttpHandler {
             conn.setDoOutput(true);
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("username_or_email", "rytlock"));
-            params.add(new BasicNameValuePair("password", "123123"));
+            params.add(new BasicNameValuePair("username_or_email", nama));
+            params.add(new BasicNameValuePair("password", password));
 
 
             OutputStream os = conn.getOutputStream();
