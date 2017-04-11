@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.client.HttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -38,10 +39,10 @@ public class HttpHandler {
     public HttpHandler() {
     }
 
-    public String makeServiceCall(String reqUrl,String nama,String password) {
+    public String postrequest(String nama,String password) {
         String response = null;
         try {
-            URL url = new URL(reqUrl);
+            URL url = new URL("https://dev.prelo.id/api/auth/login/");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(10000);
             conn.setConnectTimeout(15000);
@@ -99,5 +100,32 @@ public class HttpHandler {
         }
 
         return result.toString();
+    }
+
+    public String getrequest(String tokenheader,String nama,String password) {
+        String response = null;
+        try {
+            URL url = new URL("https://dev.prelo.id/api/me/lovelist/");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            con.setRequestProperty("Authorization",tokenheader);
+
+            int responseCode=conn.getResponseCode();
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line=br.readLine()) != null) {
+                    response+=line;
+                }
+            }
+            else {
+                response="";
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response;
     }
 }

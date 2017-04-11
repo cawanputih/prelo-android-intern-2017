@@ -54,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
     EditText etnama;
     EditText etpassword;
     Button btnlogin;
-    private static String url = " https://dev.prelo.id/api/auth/login/";
 
 
     @Override
@@ -68,12 +67,12 @@ public class LoginActivity extends AppCompatActivity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GetGuest().execute();
+                new LoginPost().execute();
             }
         });
     }
 
-    private class GetGuest extends AsyncTask<Void, Void, Void> {
+    private class LoginPost extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -89,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         protected Void doInBackground(Void... arg0) {
             HttpHandler sh = new HttpHandler();
 
-            String jsonStr = sh.makeServiceCall(url,etnama.getText().toString(),etpassword.getText().toString());
+            String jsonStr = sh.postrequest(etnama.getText().toString(),etpassword.getText().toString());
 
             if (jsonStr != null) {
                 try {
@@ -144,7 +143,9 @@ public class LoginActivity extends AppCompatActivity {
                     mtoken,
                     Toast.LENGTH_LONG)
                     .show();
-
+            Intent i = new Intent(LoginActivity.this,ProfileActivity.class);
+            i.putExtra("key_token",mtoken);
+            startActivity(i);
         }
     }
 }
