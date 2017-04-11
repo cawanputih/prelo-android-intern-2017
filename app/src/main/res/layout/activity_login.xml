@@ -11,9 +11,10 @@
     tools:context="purba.app.LoginActivity">
 
 
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="200dp"
         android:id="@+id/idnama"
         android:layout_marginTop="100dp"
         android:inputType="textPersonName"
@@ -22,7 +23,13 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@id/idnama"
-        android:id="@+id/idpassword"/>
+        android:id="@+id/idpassword"
+        android:inputType="textPassword"/>
+    <Button
+        android:layout_width="match_parent"
+        android:text="Login"
+        android:layout_height="40dp"
+        android:layout_below="@id/idpassword"/>
 
 
 
