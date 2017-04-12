@@ -12,6 +12,8 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +47,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         new ProfileGet().execute();
     }
+
 
     private class ProfileGet extends AsyncTask<Void, Void, Void> {
 
@@ -136,14 +139,8 @@ public class ProfileActivity extends AppCompatActivity {
             Log.d(TAG,pesan);
             txttok.setText(intenttoken);
             txtbalasan.setText(pesan);
-            for(int i = 0 ; i < wishlist.size() ;i++){
-                Log.d("nama",wishlist.get(i).getName());
-                Log.d("price","" + wishlist.get(i).getPrice());
-                Log.d("srcimage","" + wishlist.get(i).getSrcimage());
-            }
 
             rv.setAdapter(new WishAdapter(ProfileActivity.this,wishlist));
-
 
         }
     }

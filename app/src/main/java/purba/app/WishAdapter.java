@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -42,7 +44,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.RecyclerViewHo
             super(v);
             tvname = (TextView) v.findViewById(R.id.idname);
             tvprice= (TextView) v.findViewById(R.id.idprice);
-            //ivdp = (ImageView) v.findViewById(R.id.idimage);
+            ivdp = (ImageView) v.findViewById(R.id.idimage);
         }
     }
 
@@ -80,8 +82,8 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.RecyclerViewHo
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         final Wish wish = wl.get(position);
         holder.tvname.setText(wish.getName());
-        holder.tvprice.setText(""+wish.getPrice());
-        //holder.ivdp.setImageBitmap(getBitmapFromURL(wish.getSrcimage()));
+        holder.tvprice.setText("Rp "+wish.getPrice());
+        Glide.with(context).load(wish.getSrcimage()).into(holder.ivdp);
     }
 
 
