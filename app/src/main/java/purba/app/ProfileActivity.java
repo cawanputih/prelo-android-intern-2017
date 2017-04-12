@@ -62,6 +62,8 @@ public class ProfileActivity extends AppCompatActivity {
          intentregion= getIntent().getStringExtra("key_region");
          intentprovinsi= getIntent().getStringExtra("key_provinsi");
 
+        setTitle(intentusername);
+
         tvfullname = (TextView) findViewById(R.id.idfullname);
         tvusername = (TextView) findViewById(R.id.idusername);
         tvemail= (TextView) findViewById(R.id.idemail);
