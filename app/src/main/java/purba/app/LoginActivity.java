@@ -21,10 +21,18 @@ public class LoginActivity extends AppCompatActivity {
 
 
     String mtoken;
+    String pict;
+    String username ;
+    String email;
+    String fullname;
+    String kecamatan;
+    String region;
+    String provinsi;
+
     EditText etnama;
     EditText etpassword;
     Button btnlogin;
-    String stringjson;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +67,6 @@ public class LoginActivity extends AppCompatActivity {
             HttpHandler sh = new HttpHandler();
 
             String jsonStr = sh.postrequest(etnama.getText().toString(),etpassword.getText().toString());
-            stringjson = jsonStr;
             if (jsonStr != null) {
                 try {
                     String crappyPrefix = "null";
@@ -70,6 +77,15 @@ public class LoginActivity extends AppCompatActivity {
 
                     JSONObject jobj = new JSONObject(jsonStr);
                     JSONObject jdata = jobj.getJSONObject("_data");
+                    JSONObject jprofile = jdata.getJSONObject("profile");
+                    pict = jprofile.getString("pict");
+                    username = jdata.optString("username");
+                    email= jdata.optString("email");
+                    fullname= jdata.optString("fullname");
+                    JSONObject jaddress = jdata.getJSONObject("default_address");
+                    kecamatan = jaddress.getString("subdistrict_name");
+                    region= jaddress.getString("region_name");
+                    provinsi= jaddress.getString("province_name");
                     mtoken = jdata.optString("token");
 
                 } catch (final JSONException e) {
@@ -109,9 +125,17 @@ public class LoginActivity extends AppCompatActivity {
             if (pDialog.isShowing())
                 pDialog.dismiss();
 
-            Log.d(TAG,stringjson);
+
             Intent i = new Intent(LoginActivity.this,ProfileActivity.class);
             i.putExtra("key_token",mtoken);
+            i.putExtra("key_pict",pict);
+            i.putExtra("key_username",username);
+            i.putExtra("key_email",email);
+            i.putExtra("key_fullname",fullname);
+            i.putExtra("key_kecamatan",kecamatan);
+            i.putExtra("key_region",region);
+            i.putExtra("key_provinsi",provinsi);
+
             startActivity(i);
         }
     }

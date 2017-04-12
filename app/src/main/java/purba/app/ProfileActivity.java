@@ -20,16 +20,30 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileActivity extends AppCompatActivity {
 
     String TAG = ProfileActivity.class.getSimpleName();
     ProgressDialog pDialog;
-    String intenttoken;
     String pesan;
-    TextView txttok;
-    TextView txtbalasan;
+    TextView tvfullname;
+    TextView tvusername;
+    TextView tvemail;
+    TextView tvlokasi;
+    CircleImageView ciwprofpict;
     RecyclerView rv;
     ArrayList<Wish> wishlist;
+
+    String intenttoken ;
+    String intentpict ;
+    String intentfullname ;
+    String intentusername;
+    String intentemail ;
+    String intentkecamatan ;
+    String intentregion;
+    String intentprovinsi;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +51,23 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
 
-        txttok = (TextView) findViewById(R.id.idshowtoken);
-        txtbalasan = (TextView) findViewById(R.id.idshowbalasan);
-        intenttoken = getIntent().getStringExtra("key_token");
+        //txttok = (TextView) findViewById(R.id.idshowtoken);
+        //txtbalasan = (TextView) findViewById(R.id.idshowbalasan);
+         intenttoken = getIntent().getStringExtra("key_token");
+         intentpict = getIntent().getStringExtra("key_pict");
+         intentfullname = getIntent().getStringExtra("key_fullname");
+         intentusername= getIntent().getStringExtra("key_username");
+         intentemail = getIntent().getStringExtra("key_email");
+         intentkecamatan = getIntent().getStringExtra("key_kecamatan");
+         intentregion= getIntent().getStringExtra("key_region");
+         intentprovinsi= getIntent().getStringExtra("key_provinsi");
+
+        tvfullname = (TextView) findViewById(R.id.idfullname);
+        tvusername = (TextView) findViewById(R.id.idusername);
+        tvemail= (TextView) findViewById(R.id.idemail);
+        tvlokasi= (TextView) findViewById(R.id.idlokasi);
+        ciwprofpict= (CircleImageView) findViewById(R.id.idprofpic);
+
 
         wishlist = new ArrayList<>();
         rv = (RecyclerView) findViewById(R.id.idrecview);
@@ -137,9 +165,13 @@ public class ProfileActivity extends AppCompatActivity {
 
             Log.d(TAG,intenttoken);
             Log.d(TAG,pesan);
-            txttok.setText(intenttoken);
-            txtbalasan.setText(pesan);
 
+            tvfullname.setText(intentfullname);
+            tvusername.setText(intentusername);
+            tvemail.setText(intentemail);
+            tvlokasi.setText(intentkecamatan+", "+intentregion+", "+intentprovinsi);
+
+            Glide.with(ProfileActivity.this).load(intentpict).into(ciwprofpict);
             rv.setAdapter(new WishAdapter(ProfileActivity.this,wishlist));
 
         }
