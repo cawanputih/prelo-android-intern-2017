@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     String kecamatan;
     String region;
     String provinsi;
-
+    String jsonStr;
     EditText etnama;
     EditText etpassword;
     Button btnlogin;
@@ -91,55 +91,60 @@ public class LoginActivity extends AppCompatActivity {
         protected Void doInBackground(Void... arg0) {
             HttpHandler sh = new HttpHandler();
 
-            String jsonStr = sh.postrequest(etnama.getText().toString(),etpassword.getText().toString());
-            if (jsonStr != null) {
-                try {
-                    String crappyPrefix = "null";
+            jsonStr = sh.postrequest(etnama.getText().toString(),etpassword.getText().toString());
 
-                    if(jsonStr.startsWith(crappyPrefix)){
-                        jsonStr = jsonStr.substring(crappyPrefix.length(), jsonStr.length());
+            if(jsonStr.isEmpty()){
+                return null;
+            }else {
+                if (jsonStr != null) {
+
+                    try {
+                        String crappyPrefix = "null";
+
+                        if (jsonStr.startsWith(crappyPrefix)) {
+                            jsonStr = jsonStr.substring(crappyPrefix.length(), jsonStr.length());
+                        }
+
+                        JSONObject jobj = new JSONObject(jsonStr);
+                        JSONObject jdata = jobj.getJSONObject("_data");
+                        JSONObject jprofile = jdata.getJSONObject("profile");
+                        pict = jprofile.getString("pict");
+                        username = jdata.optString("username");
+                        email = jdata.optString("email");
+                        fullname = jdata.optString("fullname");
+                        JSONObject jaddress = jdata.getJSONObject("default_address");
+                        kecamatan = jaddress.getString("subdistrict_name");
+                        region = jaddress.getString("region_name");
+                        provinsi = jaddress.getString("province_name");
+                        mtoken = jdata.optString("token");
+
+                    } catch (final JSONException e) {
+                        Log.e(TAG, "Json parsing error: " + e.getMessage());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(),
+                                        "Json parsing error: " + e.getMessage(),
+                                        Toast.LENGTH_LONG)
+                                        .show();
+                            }
+                        });
+
                     }
-
-                    JSONObject jobj = new JSONObject(jsonStr);
-                    JSONObject jdata = jobj.getJSONObject("_data");
-                    JSONObject jprofile = jdata.getJSONObject("profile");
-                    pict = jprofile.getString("pict");
-                    username = jdata.optString("username");
-                    email= jdata.optString("email");
-                    fullname= jdata.optString("fullname");
-                    JSONObject jaddress = jdata.getJSONObject("default_address");
-                    kecamatan = jaddress.getString("subdistrict_name");
-                    region= jaddress.getString("region_name");
-                    provinsi= jaddress.getString("province_name");
-                    mtoken = jdata.optString("token");
-
-                } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                } else {
+                    Log.e(TAG, "Couldn't get json from server.");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
+                                    "Couldn't get json from server. Check LogCat for possible errors!",
                                     Toast.LENGTH_LONG)
                                     .show();
                         }
                     });
 
                 }
-            } else {
-                Log.e(TAG, "Couldn't get json from server.");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
-                                Toast.LENGTH_LONG)
-                                .show();
-                    }
-                });
-
             }
-
             return null;
         }
 
@@ -150,18 +155,25 @@ public class LoginActivity extends AppCompatActivity {
             if (pDialog.isShowing())
                 pDialog.dismiss();
 
+            if(jsonStr.isEmpty()){
+                finish();
+                overridePendingTransition( 0, 0);
+                startActivity(getIntent());
+                overridePendingTransition( 0, 0);
 
-            Intent i = new Intent(LoginActivity.this,ProfileActivity.class);
-            i.putExtra("key_token",mtoken);
-            i.putExtra("key_pict",pict);
-            i.putExtra("key_username",username);
-            i.putExtra("key_email",email);
-            i.putExtra("key_fullname",fullname);
-            i.putExtra("key_kecamatan",kecamatan);
-            i.putExtra("key_region",region);
-            i.putExtra("key_provinsi",provinsi);
+            }else {
+                Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
+                i.putExtra("key_token", mtoken);
+                i.putExtra("key_pict", pict);
+                i.putExtra("key_username", username);
+                i.putExtra("key_email", email);
+                i.putExtra("key_fullname", fullname);
+                i.putExtra("key_kecamatan", kecamatan);
+                i.putExtra("key_region", region);
+                i.putExtra("key_provinsi", provinsi);
 
-            startActivity(i);
+                startActivity(i);
+            }
         }
     }
 }
