@@ -5,12 +5,18 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -20,14 +26,22 @@ public class ProfileActivity extends AppCompatActivity {
     String pesan;
     TextView txttok;
     TextView txtbalasan;
+    RecyclerView rv;
+    ArrayList<Wish> wishlist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+
         txttok = (TextView) findViewById(R.id.idshowtoken);
         txtbalasan = (TextView) findViewById(R.id.idshowbalasan);
         intenttoken = getIntent().getStringExtra("key_token");
+
+        wishlist = new ArrayList<>();
+        rv = (RecyclerView) findViewById(R.id.idrecview);
+        rv.setLayoutManager( new LinearLayoutManager(this));
 
         new ProfileGet().execute();
     }
@@ -50,7 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             String jsonStr = sh.getrequest(intenttoken);
             pesan = jsonStr;
-            /*if (jsonStr != null) {
+            if (jsonStr != null) {
                 try {
                     String crappyPrefix = "null";
 
@@ -59,8 +73,27 @@ public class ProfileActivity extends AppCompatActivity {
                     }
 
                     JSONObject jobj = new JSONObject(jsonStr);
-                    JSONObject jdata = jobj.getJSONObject("_data");
-                    mtoken = jdata.optString("token");
+                    JSONArray jdata = jobj.getJSONArray("_data");
+
+                    wishlist.clear();
+                    Wish wish;
+
+                    for (int i = 0; i < jdata.length(); i++) {
+                        JSONObject c = jdata.getJSONObject(i);
+
+                        String name = c.getString("name");
+                        int price = c.getInt("price");
+                        JSONArray dp = c.getJSONArray("display_picts");
+                        String srcimage = dp.getString(0);
+
+                        wish= new Wish();
+
+                        wish.setName(name);
+                        wish.setPrice(price);
+                        wish.setSrcimage(srcimage);
+
+                        wishlist.add(wish);
+                    }
 
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -87,7 +120,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
 
-            }*/
+            }
 
             return null;
         }
@@ -99,14 +132,19 @@ public class ProfileActivity extends AppCompatActivity {
             if (pDialog.isShowing())
                 pDialog.dismiss();
 
-            Toast.makeText(getApplicationContext(),
-                    pesan,
-                    Toast.LENGTH_LONG)
-                    .show();
             Log.d(TAG,intenttoken);
             Log.d(TAG,pesan);
             txttok.setText(intenttoken);
             txtbalasan.setText(pesan);
+            for(int i = 0 ; i < wishlist.size() ;i++){
+                Log.d("nama",wishlist.get(i).getName());
+                Log.d("price","" + wishlist.get(i).getPrice());
+                Log.d("srcimage","" + wishlist.get(i).getSrcimage());
+            }
+
+            rv.setAdapter(new WishAdapter(ProfileActivity.this,wishlist));
+
+
         }
     }
 }

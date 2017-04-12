@@ -51,8 +51,8 @@ public class HttpHandler {
             conn.setDoOutput(true);
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("username_or_email", nama));
-            params.add(new BasicNameValuePair("password", password));
+            params.add(new BasicNameValuePair("username_or_email", "rytlock"));
+            params.add(new BasicNameValuePair("password", "123123"));
 
 
             OutputStream os = conn.getOutputStream();
