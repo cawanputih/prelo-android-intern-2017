@@ -102,13 +102,13 @@ public class HttpHandler {
         return result.toString();
     }
 
-    public String getrequest(String tokenheader,String nama,String password) {
+    public String getrequest(String tokenheader) {
         String response = null;
         try {
             URL url = new URL("https://dev.prelo.id/api/me/lovelist/");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            con.setRequestProperty("Authorization",tokenheader);
+            conn.setRequestProperty("authorization","Token "+tokenheader);
 
             int responseCode=conn.getResponseCode();
 
