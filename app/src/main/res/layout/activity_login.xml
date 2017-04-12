@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:ems="10"
-        android:hint="username"
+        android:hint="username atau email"
         android:id="@+id/idnama"
         android:layout_marginTop="100dp"
         android:inputType="textEmailAddress"

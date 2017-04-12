@@ -46,9 +46,33 @@ public class LoginActivity extends AppCompatActivity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new LoginPost().execute();
+                dologin();
             }
         });
+    }
+
+    public boolean valid(){
+        String nama = etnama.getText().toString().trim();
+        String password = etpassword.getText().toString().trim();
+        boolean bool = true ;
+
+        if(nama.isEmpty()){
+            etnama.setError("Username atau email tidak boleh kosong");
+            bool = false;
+        }
+
+        if(password.length()<6){
+            etpassword.setError("Password minimal enam karakter");
+            bool = false;
+        }
+
+        return bool;
+    }
+
+    public void dologin(){
+        if(valid()){
+            new LoginPost().execute();
+        }
     }
 
     private class LoginPost extends AsyncTask<Void, Void, Void> {

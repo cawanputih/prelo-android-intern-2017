@@ -50,9 +50,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-
-        //txttok = (TextView) findViewById(R.id.idshowtoken);
-        //txtbalasan = (TextView) findViewById(R.id.idshowbalasan);
          intenttoken = getIntent().getStringExtra("key_token");
          intentpict = getIntent().getStringExtra("key_pict");
          intentfullname = getIntent().getStringExtra("key_fullname");
