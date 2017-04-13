@@ -7,14 +7,5 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-<<<<<<< HEAD
-    
-    <style name="CustomActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@color/colorAccent</item>
-
-    </style>
-
-=======
->>>>>>> 9ccaf00c9c265d9c3c0a8d3830efbb8c71821d95
 
 </resources>
