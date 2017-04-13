@@ -7,3 +7,8 @@
 /build
 /captures
 .externalNativeBuild
+<<<<<<< HEAD
+=======
+google-services.json
+keystore.properties
+>>>>>>> 9ccaf00c9c265d9c3c0a8d3830efbb8c71821d95
