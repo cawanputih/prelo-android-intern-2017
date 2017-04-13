@@ -93,43 +93,43 @@ public class LoginActivity extends AppCompatActivity {
 
             jsonStr = sh.postrequest(etnama.getText().toString(),etpassword.getText().toString());
 
-            if(jsonStr.isEmpty()){
-                return null;
-            }else {
                 if (jsonStr != null) {
+                    if(jsonStr.isEmpty()){
+                        return null;}
+                    else {
+                        try {
+                            String crappyPrefix = "null";
 
-                    try {
-                        String crappyPrefix = "null";
-
-                        if (jsonStr.startsWith(crappyPrefix)) {
-                            jsonStr = jsonStr.substring(crappyPrefix.length(), jsonStr.length());
-                        }
-
-                        JSONObject jobj = new JSONObject(jsonStr);
-                        JSONObject jdata = jobj.getJSONObject("_data");
-                        JSONObject jprofile = jdata.getJSONObject("profile");
-                        pict = jprofile.getString("pict");
-                        username = jdata.optString("username");
-                        email = jdata.optString("email");
-                        fullname = jdata.optString("fullname");
-                        JSONObject jaddress = jdata.getJSONObject("default_address");
-                        kecamatan = jaddress.getString("subdistrict_name");
-                        region = jaddress.getString("region_name");
-                        provinsi = jaddress.getString("province_name");
-                        mtoken = jdata.optString("token");
-
-                    } catch (final JSONException e) {
-                        Log.e(TAG, "Json parsing error: " + e.getMessage());
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(),
-                                        "Json parsing error: " + e.getMessage(),
-                                        Toast.LENGTH_LONG)
-                                        .show();
+                            if (jsonStr.startsWith(crappyPrefix)) {
+                                jsonStr = jsonStr.substring(crappyPrefix.length(), jsonStr.length());
                             }
-                        });
 
+                            JSONObject jobj = new JSONObject(jsonStr);
+                            JSONObject jdata = jobj.getJSONObject("_data");
+                            JSONObject jprofile = jdata.getJSONObject("profile");
+                            pict = jprofile.getString("pict");
+                            username = jdata.optString("username");
+                            email = jdata.optString("email");
+                            fullname = jdata.optString("fullname");
+                            JSONObject jaddress = jdata.getJSONObject("default_address");
+                            kecamatan = jaddress.getString("subdistrict_name");
+                            region = jaddress.getString("region_name");
+                            provinsi = jaddress.getString("province_name");
+                            mtoken = jdata.optString("token");
+
+                        } catch (final JSONException e) {
+                            Log.e(TAG, "Json parsing error: " + e.getMessage());
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(),
+                                            "Json parsing error: " + e.getMessage(),
+                                            Toast.LENGTH_LONG)
+                                            .show();
+                                }
+                            });
+
+                        }
                     }
                 } else {
                     Log.e(TAG, "Couldn't get json from server.");
@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                     });
 
                 }
-            }
+
             return null;
         }
 
@@ -156,6 +156,7 @@ public class LoginActivity extends AppCompatActivity {
                 pDialog.dismiss();
 
             if(jsonStr.isEmpty()){
+                Toast.makeText(LoginActivity.this, "Username/Email atau Password Anda Salah", Toast.LENGTH_SHORT).show();
                 finish();
                 overridePendingTransition( 0, 0);
                 startActivity(getIntent());
