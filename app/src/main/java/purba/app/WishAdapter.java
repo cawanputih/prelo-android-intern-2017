@@ -1,6 +1,7 @@
 package purba.app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
@@ -39,9 +40,11 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.RecyclerViewHo
         public TextView tvname;
         public TextView tvprice;
         public ImageView ivdp;
+        public View v;
 
         public RecyclerViewHolder(View v) {
             super(v);
+            this.v = v;
             tvname = (TextView) v.findViewById(R.id.idname);
             tvprice= (TextView) v.findViewById(R.id.idprice);
             ivdp = (ImageView) v.findViewById(R.id.idimage);
@@ -84,6 +87,18 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.RecyclerViewHo
         holder.tvname.setText(wish.getName());
         holder.tvprice.setText("Rp "+wish.getPrice());
         Glide.with(context).load(wish.getSrcimage()).into(holder.ivdp);
+
+
+        holder.v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String idbarang = wish.getid();
+                Intent i = new Intent(context, CheckoutActivity.class);
+                i.putExtra("key_idbarang",idbarang);
+                context.startActivity(i);
+            }
+        });
+
     }
 
 

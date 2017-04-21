@@ -1,15 +1,10 @@
 package purba.app;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -18,70 +13,28 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+public class CheckoutActivity extends AppCompatActivity {
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-public class ProfileActivity extends AppCompatActivity {
-
-    String TAG = ProfileActivity.class.getSimpleName();
+    String intentidbarang;
     ProgressDialog pDialog;
     String pesan;
-    TextView tvfullname;
-    TextView tvusername;
-    TextView tvemail;
-    TextView tvlokasi;
-    CircleImageView ciwprofpict;
-    RecyclerView rv;
-    ArrayList<Wish> wishlist;
-
-    String intenttoken ;
-    String intentpict ;
-    String intentfullname ;
-    String intentusername;
-    String intentemail ;
-    String intentkecamatan ;
-    String intentregion;
-    String intentprovinsi;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_checkout);
 
-         intenttoken = getIntent().getStringExtra("key_token");
-         intentpict = getIntent().getStringExtra("key_pict");
-         intentfullname = getIntent().getStringExtra("key_fullname");
-         intentusername= getIntent().getStringExtra("key_username");
-         intentemail = getIntent().getStringExtra("key_email");
-         intentkecamatan = getIntent().getStringExtra("key_kecamatan");
-         intentregion= getIntent().getStringExtra("key_region");
-         intentprovinsi= getIntent().getStringExtra("key_provinsi");
+        intentidbarang = getIntent().getStringExtra("key_idbarang");
 
-        setTitle(intentusername);
-
-        tvfullname = (TextView) findViewById(R.id.idfullname);
-        tvusername = (TextView) findViewById(R.id.idusername);
-        tvemail= (TextView) findViewById(R.id.idemail);
-        tvlokasi= (TextView) findViewById(R.id.idlokasi);
-        ciwprofpict= (CircleImageView) findViewById(R.id.idprofpic);
-
-
-        wishlist = new ArrayList<>();
-        rv = (RecyclerView) findViewById(R.id.idrecview);
-        rv.setLayoutManager( new LinearLayoutManager(this));
-
-        new ProfileGet().execute();
+        new GetBarang().execute();
     }
 
-
-    private class ProfileGet extends AsyncTask<Void, Void, Void> {
+    private class GetBarang extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(ProfileActivity.this);
+            pDialog = new ProgressDialog(CheckoutActivity.this);
             pDialog.setMessage("Loading ...");
             pDialog.setCancelable(false);
             pDialog.show();
@@ -92,7 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
         protected Void doInBackground(Void... arg0) {
             HttpHandler sh = new HttpHandler();
 
-            String jsonStr = sh.getrequest(intenttoken);
+            String jsonStr = sh.getrequestbarang(intentidbarang);
             pesan = jsonStr;
             if (jsonStr != null) {
                 try {

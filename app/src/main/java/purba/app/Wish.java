@@ -8,7 +8,7 @@ public class Wish {
     String name;
     int price;
     String srcimage;
-
+    String id;
     public String getName() {
         return name;
     }
@@ -31,5 +31,13 @@ public class Wish {
 
     public void setSrcimage(String srcimage) {
         this.srcimage = srcimage;
+    }
+
+    public String getid() {
+        return id;
+    }
+
+    public void setid(String _id) {
+        this.id= _id;
     }
 }

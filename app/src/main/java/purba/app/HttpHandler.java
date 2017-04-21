@@ -128,4 +128,30 @@ public class HttpHandler {
         }
         return response;
     }
+
+    public String getrequestbarang(String tokenidbarang) {
+        String response = null;
+        try {
+            URL url = new URL("https://dev.prelo.id/product/tokenidbarang");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+
+            int responseCode=conn.getResponseCode();
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line=br.readLine()) != null) {
+                    response+=line;
+                }
+            }
+            else {
+                response="";
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
 }
